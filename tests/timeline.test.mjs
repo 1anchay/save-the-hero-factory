@@ -35,3 +35,9 @@ test('rejects missing voice text',()=>{
   episode.outcome.narration='';
   assert.ok(validateEpisode(episode).some(s=>s.includes('outcome.narration')));
 });
+
+
+test('episode uses our own in-project generated soundtrack, not a third-party track',()=>{
+  assert.equal(demo.audio.music, 'music/original-hero-adventure.wav');
+  assert.equal(demo.audio.voice, null);
+});

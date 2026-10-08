@@ -4,7 +4,7 @@ New standalone cartoon mini-story video factory. **Not a copy of the four-pictur
 
 ## Status — Stage 1: Foundation
 
-A complete Remotion/React project scaffold and a playable **technical cartoon preview** of one lava-bridge rescue. This preview uses authored vector layers and placeholders for final character art. **No voice track is included in Stage 1**; the storyline and caption strings are already provided and Stage 4 will align recorded voice and captions. Do not publish the technical preview as a finished episode.
+A complete Remotion/React project scaffold and a playable **technical cartoon preview** of one lava-bridge rescue. This preview uses authored vector layers and placeholders for final character art. **Original procedural music and SFX are now included, but no voice track is included yet**; the storyline and caption strings are already provided and Stage 4 will align recorded voice and captions. Do not publish the technical preview as a finished episode.
 
 ## Video format
 
@@ -50,6 +50,10 @@ scripts/validate.mjs       # standalone episode check
 tests/                     # timing / decision unit tests
 .github/workflows/ci.yml   # validate + typecheck + render preview
 ```
+
+## Copyright-aware original audio
+
+Music and three SFX are synthesised locally from original code in `scripts/generate-original-audio.mjs`. The project does not download third-party music, reuse samples, or depend on streaming licensing. Run `npm run audio:generate` or either render command to create the WAV files. The audio is author-created and offered for the user's own videos. **TikTok may still incorrectly flag original audio** and its automated decisions cannot be guaranteed; retain the source project, composition notes and rendered stems if an appeal is needed.
 
 ## Why voice isn't a placeholder MP3
 

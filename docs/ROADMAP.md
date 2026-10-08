@@ -8,6 +8,12 @@
 - All 3 choices visible for 6 full seconds before reveal
 - Automated unit tests, TypeScript checks, and GitHub Actions preview
 
+## Stage 1.5: Original TikTok-safe sound palette
+- Deterministically synthesize original background music (no borrowed melody, no samples)
+- Synthesize original countdown, bridge cracking, rescue success sounds
+- Add procedural composition source and copyright provenance in repo
+- Never claim any audio can bypass every automated TikTok detector
+
 ## Stage 2: Cartoon polish
 - Improve character face rig, expressions, hand/leg poses
 - Layered scenery, parallax, rope-swing motion, dust, embers

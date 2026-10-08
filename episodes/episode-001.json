@@ -23,9 +23,24 @@
     "narration": "У тебя шесть секунд. Выбирай!"
   },
   "choices": [
-    { "id": "A", "text": "Прыгнуть", "icon": "jump", "color": "#FF6B6B" },
-    { "id": "B", "text": "Верёвка", "icon": "rope", "color": "#43C59E" },
-    { "id": "C", "text": "Позвать дракона", "icon": "dragon", "color": "#7869FF" }
+    {
+      "id": "A",
+      "text": "Прыгнуть",
+      "icon": "jump",
+      "color": "#FF6B6B"
+    },
+    {
+      "id": "B",
+      "text": "Верёвка",
+      "icon": "rope",
+      "color": "#43C59E"
+    },
+    {
+      "id": "C",
+      "text": "Позвать дракона",
+      "icon": "dragon",
+      "color": "#7869FF"
+    }
   ],
   "correctChoice": "B",
   "outcome": {
@@ -38,6 +53,6 @@
   },
   "audio": {
     "voice": null,
-    "music": null
+    "music": "music/original-hero-adventure.wav"
   }
 }
