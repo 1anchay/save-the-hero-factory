@@ -43,7 +43,7 @@ jobs:
           command -v ffmpeg
           command -v ffprobe
 
-      - name: Generate and validate six Russian voice tracks
+      - name: Generate and validate eight Russian voice tracks
         run: npm run voice:generate
 
       - name: Validate JSON and timing
@@ -69,7 +69,7 @@ jobs:
       - name: Upload preview
         uses: actions/upload-artifact@v4
         with:
-          name: save-the-hero-voiced-cartoon-preview
+          name: save-the-hero-three-outcomes-40s-preview
           path: |
             output/episode-001-preview.mp4
             src/generated/voice-timings.json

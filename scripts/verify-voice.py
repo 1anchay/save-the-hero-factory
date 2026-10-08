@@ -8,7 +8,7 @@ import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PHASES = ["intro","danger","choicesIntro","decision","outcome","outro"]
+PHASES = ["intro","danger","choicesIntro","decision","jumpOutcome","dragonOutcome","ropeOutcome","outro"]
 ep = json.loads((ROOT / "episodes/episode-001.json").read_text(encoding="utf-8"))
 manifest = json.loads((ROOT / "src/generated/voice-timings.json").read_text(encoding="utf-8"))
 assert manifest["id"] == ep["id"], "Wrong voice manifest for episode"
@@ -40,7 +40,7 @@ for phase in PHASES:
         if i: assert w["start"] >= words[i-1]["start"], f"Out of order timestamps in {phase}"
     print(f"Verified {phase}: {len(words)} spoken words / {duration:.2f}s")
 
-assert ep["decision"]["seconds"] >= 6, "Decision interval too short"
+assert ep["decision"]["seconds"] >= 7, "Decision interval too short"
 video=ROOT/"output/episode-001-preview.mp4"
 assert video.exists(), "No rendered MP4"
 meta=probe(video)
@@ -49,11 +49,16 @@ assert any(s.get("codec_type")=="audio" and s.get("codec_name")=="aac" for s in 
 target=sum(ep[k]["seconds"] for k in PHASES)
 duration=float(meta["format"]["duration"])
 assert math.isclose(duration,target,abs_tol=.20), f"MP4 duration {duration} differs from timeline {target}"
-report={"status":"PASS","narrated_phases":6,"voice":manifest["voice"],
+report={"status":"PASS","narrated_phases":8,"voice":manifest["voice"],
         "word_boundaries":sum(len(manifest["phases"][p]["words"]) for p in PHASES),
         "choice_seconds":ep["decision"]["seconds"],"video_seconds":duration,
         "codecs":["h264","aac"],"music_source":"in-project original synthesis"}
 out=ROOT/"output/voice-validation.json"
 out.parent.mkdir(exist_ok=True)
 out.write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-print("VOICE, WORD-TIMINGS, FULL SIX-SECOND CHOICE AND FINAL MP4: PASS")
+print("VOICE, WORD-TIMINGS, FULL SEVEN-SECOND CHOICE AND FINAL MP4: PASS")
+
+assert ep["correctChoice"] == "B", "Rope must be correct"
+assert [ph for ph in PHASES if ph.endswith("Outcome")] == [
+    "jumpOutcome", "dragonOutcome", "ropeOutcome"
+], "Render all 3 options in explicit retry order"

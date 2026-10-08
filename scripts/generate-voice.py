@@ -18,7 +18,7 @@ from pathlib import Path
 import edge_tts
 
 ROOT = Path(__file__).resolve().parents[1]
-PHASES = ("intro", "danger", "choicesIntro", "decision", "outcome", "outro")
+PHASES = ("intro", "danger", "choicesIntro", "decision", "jumpOutcome", "dragonOutcome", "ropeOutcome", "outro")
 VOICE = os.environ.get("HERO_VOICE", "ru-RU-DmitryNeural")
 RATE = os.environ.get("HERO_VOICE_RATE", "+10%")
 OUT = ROOT / "assets" / "voice"
@@ -118,7 +118,7 @@ async def main() -> None:
             if previous.get("source_hash") == signature and all(
                 (OUT / f"{episode['id']}-{phase}.mp3").stat().st_size > 2500 for phase in PHASES
             ):
-                print("VOICE CACHE HIT: six real clips match exact episode text and voice settings", flush=True)
+                print("VOICE CACHE HIT: eight real clips match exact episode text and voice settings", flush=True)
                 return
         except (OSError, KeyError, ValueError):
             pass
@@ -161,7 +161,7 @@ async def main() -> None:
     if set(manifest["phases"]) != set(PHASES):
         raise RuntimeError("Missing narration phases")
     MANIFEST.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(f"6 valid spoken tracks and timestamped captions -> {MANIFEST.relative_to(ROOT)}", flush=True)
+    print(f"8 valid spoken tracks and timestamped captions -> {MANIFEST.relative_to(ROOT)}", flush=True)
 
 
 if __name__ == "__main__":
