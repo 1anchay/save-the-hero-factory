@@ -38,7 +38,7 @@ async def synthesize(text: str, filename: Path) -> list[dict]:
     filename.parent.mkdir(parents=True, exist_ok=True)
     words: list[dict] = []
     total = 0
-    talk = edge_tts.Communicate(text=text, voice=VOICE, rate=RATE)
+    talk = edge_tts.Communicate(text=text, voice=VOICE, rate=RATE, boundary="WordBoundary")
     with filename.open("wb") as out:
         async for item in talk.stream():
             if item["type"] == "audio":
