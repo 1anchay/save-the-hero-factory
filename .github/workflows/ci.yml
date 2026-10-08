@@ -30,6 +30,20 @@ jobs:
       - name: Install dependencies
         run: npm ci --no-audit --no-fund
 
+      - name: Set up Python for free narration
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Edge TTS and audio tools
+        run: |
+          python3 -m pip install --disable-pip-version-check 'edge-tts>=7,<8'
+          command -v ffmpeg
+          command -v ffprobe
+
+      - name: Generate and validate six Russian voice tracks
+        run: npm run voice:generate
+
       - name: Validate JSON and timing
         run: npm run validate
 
@@ -42,10 +56,20 @@ jobs:
       - name: Render technical preview
         run: npm run render:preview
 
+      - name: Verify MP4 contains audio and video
+        run: |
+          set -euo pipefail
+          test -s output/episode-001-preview.mp4
+          ffprobe -v error -select_streams a -show_entries stream=codec_name -of csv=p=0 output/episode-001-preview.mp4 | grep -q aac
+          ffprobe -v error -select_streams v -show_entries stream=codec_name -of csv=p=0 output/episode-001-preview.mp4 | grep -q h264
+          python3 scripts/verify-voice.py
+
       - name: Upload preview
         uses: actions/upload-artifact@v4
         with:
-          name: save-the-hero-foundation-preview
-          path: output/episode-001-preview.mp4
+          name: save-the-hero-voiced-cartoon-preview
+          path: |
+            output/episode-001-preview.mp4
+            src/generated/voice-timings.json
           if-no-files-found: error
           retention-days: 14

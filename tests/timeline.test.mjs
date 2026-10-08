@@ -21,7 +21,7 @@ test('viewers get six full seconds AFTER all three choices enter',()=>{
 test('phases have no gaps or overlaps',()=>{
   const s=buildSegments(demo);
   for(let i=1;i<s.length;i++) assert.equal(s[i-1].end,s[i].from);
-  assert.equal(s.at(-1).end,Math.round(21.4*FPS));
+  assert.equal(s.at(-1).end,Math.round(22.9*FPS));
 });
 
 test('rejects choices that are too quick',()=>{
@@ -40,4 +40,10 @@ test('rejects missing voice text',()=>{
 test('episode uses our own in-project generated soundtrack, not a third-party track',()=>{
   assert.equal(demo.audio.music, 'music/original-hero-adventure.wav');
   assert.equal(demo.audio.voice, null);
+});
+
+
+test('outro has time for dragon comedy reveal',()=>{
+  assert.equal(demo.outro.seconds,4.2);
+  assert.ok(demo.outro.narration.toLowerCase().includes('дракон'));
 });

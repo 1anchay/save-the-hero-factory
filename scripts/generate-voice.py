@@ -7,6 +7,7 @@ than silently producing a speech-free published MP4.
 """
 from __future__ import annotations
 import asyncio
+import hashlib
 import json
 import os
 import re
@@ -110,7 +111,18 @@ async def main() -> None:
     episode = json.loads((ROOT / "episodes" / "episode-001.json").read_text(encoding="utf-8"))
     if not re.fullmatch(r"episode-\d{3}", episode["id"]):
         raise RuntimeError("Invalid episode ID")
-    manifest = {"id": episode["id"], "voice": VOICE, "phases": {}}
+    signature = hashlib.sha256(json.dumps({"episode": episode, "voice": VOICE, "rate": RATE}, ensure_ascii=False, sort_keys=True).encode("utf-8")).hexdigest()
+    if MANIFEST.exists():
+        try:
+            previous = json.loads(MANIFEST.read_text(encoding="utf-8"))
+            if previous.get("source_hash") == signature and all(
+                (OUT / f"{episode['id']}-{phase}.mp3").stat().st_size > 2500 for phase in PHASES
+            ):
+                print("VOICE CACHE HIT: six real clips match exact episode text and voice settings", flush=True)
+                return
+        except (OSError, KeyError, ValueError):
+            pass
+    manifest = {"id": episode["id"], "voice": VOICE, "source_hash": signature, "phases": {}}
     OUT.mkdir(parents=True, exist_ok=True)
     MANIFEST.parent.mkdir(parents=True, exist_ok=True)
 

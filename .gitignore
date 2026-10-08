@@ -11,3 +11,4 @@ assets/voice/**/*.mp3
 assets/voice/**/*.json
 *.tmp
 .DS_Store
+src/generated/voice-timings.json

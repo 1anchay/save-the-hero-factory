@@ -24,11 +24,12 @@
 - Configurable 5–10-second decision timer
 - Reusable scene/story templates
 
-## Stage 4: Russian audio and subtitle sync
-- Generate real narrator speech with free Edge TTS (optional Piper)
-- Captions timed to actual audio; word highlighting only when timestamps exist
-- Music, effects, and automatic ducking under speech
-- CI must fail instead of silently producing narration-free production output
+## Stage 4: Russian audio and subtitle sync (implemented)
+- Six real generated narrator clips with free Edge TTS (optional local Piper later)
+- Captions timed to actual TTS word boundaries with highlighted active word
+- Original music and effects duck automatically under spoken narration
+- CI fails if voice unavailable, silent or overlong; MP4 audio/video codecs verified
+- Cartoon dragon arrives too late in the ending as a visual joke
 
 ## Stage 5: Five mini-stories
 - Lava bridge, shark raft, boulder temple, ice cliff, boss monster

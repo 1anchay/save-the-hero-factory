@@ -2,6 +2,7 @@ import React from 'react';
 import {interpolate, useCurrentFrame} from 'remotion';
 import type {PhaseName} from '../schema';
 import {CartoonHero} from './CartoonHero';
+import {LateDragon} from './LateDragon';
 
 interface Props {phase: PhaseName}
 const clamp = {extrapolateLeft:'clamp',extrapolateRight:'clamp'} as const;
@@ -116,6 +117,7 @@ export const CartoonWorld: React.FC<Props> = ({phase}) => {
           </g>
         </g>}
         <CartoonHero x={322} y={899} scale={1.02} emotion={isOutcome?'happy':phase==='intro'?'hopeful':'worried'} travel={484*escape} lift={lift} rescued={isOutcome}/>
+        {phase==='outro' && <LateDragon/>}
         {isOutcome && Array.from({length:10},(_,i)=>{
           const opacity=phase==='outro'?.85:interpolate(f,[24+i,48+i],[0,.9],clamp);
           const x=680+(i*41)%260,y=730+(i*67)%160;

@@ -16,7 +16,7 @@
   },
   "choicesIntro": {
     "seconds": 2.4,
-    "narration": "Прыгнуть, бросить верёвку или позвать дракона?"
+    "narration": "Прыгнуть? Верёвка? Или дракон?"
   },
   "decision": {
     "seconds": 6,
@@ -45,11 +45,11 @@
   "correctChoice": "B",
   "outcome": {
     "seconds": 4.3,
-    "narration": "Верёвка сработала! Макс в безопасности!"
+    "narration": "Верёвка сработала! Макс спасён!"
   },
   "outro": {
-    "seconds": 2.7,
-    "narration": "А что выбрал ты? Напиши в комментариях!"
+    "seconds": 4.2,
+    "narration": "А дракон прилетел, когда всё уже закончилось!"
   },
   "audio": {
     "voice": null,

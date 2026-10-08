@@ -62,3 +62,11 @@ Stage 1 deliberately validates captions and leaves `audio.voice = null` instead 
 ## Planned development
 
 See [docs/ROADMAP.md](docs/ROADMAP.md).
+
+## Stage 4 voice and timed Russian subtitles
+
+The demo now generates six **real spoken Russian** segments with Edge TTS (Dmitry) during GitHub Actions builds. It saves per-word timestamps to `src/generated/voice-timings.json`. The Remotion subtitle layer highlights words at their actual narration timestamps, while the original in-project musical score ducks under speech.
+
+Windows local setup: `python -m pip install 'edge-tts>=7,<8'`, ensure FFmpeg/FFprobe are on PATH, then `npm run render:preview`. A missing speech provider or silent/overlong voice **fails the build**; there is no silent publishing fallback. Edge TTS is an online service even though no API key is required, so its availability and terms may change. Music and SFX remain wholly original and generated locally.
+
+The ending adds a friendly cartoon dragon who arrives too late, as a gag after Max is rescued.

@@ -10,14 +10,15 @@
   },
   "scripts": {
     "studio": "remotion studio src/index.ts --public-dir=assets",
-    "render:demo": "npm run audio:generate && remotion render src/index.ts SaveTheHeroDemo output/episode-001.mp4 --public-dir=assets --codec=h264",
-    "render:preview": "npm run audio:generate && remotion render src/index.ts SaveTheHeroDemo output/episode-001-preview.mp4 --public-dir=assets --codec=h264 --scale=0.5 --concurrency=1",
+    "render:demo": "npm run audio:generate && npm run voice:generate && remotion render src/index.ts SaveTheHeroDemo output/episode-001.mp4 --public-dir=assets --codec=h264",
+    "render:preview": "npm run audio:generate && npm run voice:generate && remotion render src/index.ts SaveTheHeroDemo output/episode-001-preview.mp4 --public-dir=assets --codec=h264 --scale=0.5 --concurrency=1",
     "still": "npm run audio:generate && remotion still src/index.ts SaveTheHeroDemo output/preview.png --frame=180 --public-dir=assets",
     "validate": "node scripts/validate.mjs episodes/episode-001.json",
     "typecheck": "tsc --noEmit",
     "test": "node --test tests/*.test.mjs",
     "check": "npm run validate && npm run test && npm run typecheck",
-    "audio:generate": "node scripts/generate-original-audio.mjs"
+    "audio:generate": "node scripts/generate-original-audio.mjs",
+    "voice:generate": "python3 scripts/generate-voice.py"
   },
   "dependencies": {
     "@remotion/cli": "4.0.534",
