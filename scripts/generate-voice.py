@@ -131,7 +131,7 @@ async def main() -> None:
         path = OUT / f"{episode['id']}-{phase}.mp3"
         narration = obj["narration"]
         last_error = None
-        for attempt in range(3):
+        for attempt in range(12):
             try:
                 words = await synthesize(narration, path)
                 seconds = retime_if_needed(path, words, float(obj["seconds"]))
@@ -153,8 +153,8 @@ async def main() -> None:
             except Exception as exc:
                 last_error = exc
                 path.unlink(missing_ok=True)
-                print(f"VOICE RETRY {phase}: {exc}", flush=True)
-                await asyncio.sleep((attempt + 1) * 1.5)
+                print(f"VOICE RETRY {phase} attempt {attempt+1}/12: {exc}", flush=True)
+                await asyncio.sleep(min(18, 2.5 + attempt * 1.8))
         else:
             raise RuntimeError(f"Voice generation failed for {phase}: {last_error}")
 
