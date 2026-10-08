@@ -1,0 +1,63 @@
+name: Bootstrap foundation and verify cartoon preview
+
+on:
+  push:
+    branches: [v0/foundation]
+    paths: [.github/workflows/bootstrap.yml]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - name: Check out foundation branch
+        uses: actions/checkout@v4
+        with:
+          ref: v0/foundation
+      - name: Extract project sources
+        run: |
+          set -euo pipefail
+          test -s .bootstrap/hero-core.tar.xz
+          tar -xJf .bootstrap/hero-core.tar.xz -C .
+          test -s src/scenes/StoryScene.tsx
+          test -s .github/workflows/ci.yml
+          rm -rf .bootstrap .github/workflows/bootstrap.yml
+      - name: Commit source files on foundation branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'Unpack Save the Hero foundation: Remotion, cartoon lava scene and tests'
+          git push origin HEAD:v0/foundation
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+      - name: Validate episode JSON and timing
+        run: npm run validate
+      - name: Run unit tests
+        run: npm test
+      - name: Typecheck TypeScript
+        run: npm run typecheck
+      - name: Commit reproducible lockfile
+        run: |
+          git add package-lock.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Lock npm dependencies for reproducible previews'
+            git push origin HEAD:v0/foundation
+          fi
+      - name: Render technical vertical MP4 preview
+        run: npm run render:preview
+      - name: Upload demo preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: save-the-hero-foundation-preview
+          path: output/episode-001-preview.mp4
+          if-no-files-found: error
+          retention-days: 14
