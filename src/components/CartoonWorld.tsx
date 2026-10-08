@@ -30,14 +30,18 @@ const Clouds: React.FC = () => {
 export const CartoonWorld: React.FC<Props> = ({phase}) => {
   const frame=useCurrentFrame();
   const f=frame;
-  const isOutcome=phase==='outcome'||phase==='outro';
-  const escape=phase==='outro'?1:isOutcome?interpolate(f,[8,77],[0,1],clamp):0;
+  const isOutcome=phase==='ropeOutcome'||phase==='outro';
+  const isJump=phase==='jumpOutcome';
+  const isDragon=phase==='dragonOutcome';
+  const escape=phase==='outro'?1:phase==='ropeOutcome'?interpolate(f,[18,122],[0,1],clamp):0;
   const lift=-120*Math.sin(Math.PI*escape)-38*escape;
-  const ropeProgress=phase==='outro'?1:isOutcome?interpolate(f,[0,22],[0,1],clamp):0;
+  const ropeProgress=phase==='outro'?1:isOutcome?interpolate(f,[2,33],[0,1],clamp):0;
   const collapse=phase==='intro'?0:phase==='danger'?interpolate(f,[9,58],[0,1],clamp):1;
   const shake=phase==='danger'?Math.sin(f*2.7)*5:0;
-  const nearZoom=phase==='danger' ? interpolate(f,[0,95],[1,1.025],clamp) : 1;
-  const dust=phase==='danger'||phase==='choicesIntro'||phase==='decision';
+  const nearZoom=phase==='danger'?interpolate(f,[0,125],[1,1.045],clamp):phase==='ropeOutcome'?interpolate(f,[0,160],[1.04,1],clamp):isJump?interpolate(f,[0,150],[1,1.025],clamp):1;
+  const jumpTravel=isJump?interpolate(f,[0,23,56,83,113,147],[0,52,290,318,185,0],clamp):0;
+  const jumpLift=isJump?interpolate(f,[0,23,57,83,113,147],[0,-40,-193,-47,112,0],clamp):0;
+  const dust=phase==='danger'||phase==='choicesIntro'||phase==='decision'||isJump||isDragon;
   return (
     <svg viewBox="0 0 1080 1920" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" style={{position:'absolute',inset:0,display:'block'}}>
       <defs>
@@ -107,6 +111,23 @@ export const CartoonWorld: React.FC<Props> = ({phase}) => {
           const x=450+(i*37)%230, y=1030+(i*31)%100, opacity=(.25+.17*Math.sin((f+i*7)/9));
           return <circle key={i} cx={x+Math.sin(f/9+i)*10} cy={y+Math.min(160,f*2.4)} r={9+i%3*6} fill="#FFE1B4" opacity={opacity}/>;
         })}
+        {/* Foreground heat shimmer and expressive splashes, handmade SVG animation. */}
+        <g opacity={.17}>
+          {[0,1,2,3,4].map(i=><path key={i}
+            d={'M'+(25+i*240)+' 1210 q-35 -55 0 -110 t0 -130'}
+            stroke="#FFEFC8" strokeWidth={12} strokeLinecap="round" fill="none"
+            transform={'translate('+Math.sin((f+i*17)/19)*17+','+Math.cos((f+i*11)/17)*12+')'}/>)}
+        </g>
+        {/* Jump choice: Max cannot reach shore, and a silly puff of air bounces him back. */}
+        {isJump && f>73 && f<130 && <g opacity={interpolate(f,[73,84,114,130],[0,.94,.94,0],clamp)}
+          transform={'translate('+(550+Math.sin(f/13)*16)+','+(1154+Math.sin(f/9)*9)+')'}>
+           <ellipse cx={0} cy={42} rx={116} ry={29} fill="#E6F8FF" opacity={.45}/>
+           <circle cx={-78} cy={-18} r={52} fill="#FFFDF0"/>
+           <circle cx={-32} cy={-45} r={71} fill="#FFFFFF"/>
+           <circle cx={48} cy={-35} r={59} fill="#FFFEF9"/>
+           <circle cx={90} cy={-12} r={42} fill="#F7FDFF"/>
+           <path d="M-79 -13 Q-23 15 54 -19" stroke="#94C5D5" strokeWidth={6} fill="none"/>
+        </g>}
         {/* A thrown rope rolls across the chasm before pulling Max to safety. */}
         {isOutcome && <g>
           <path d="M380 936 Q575 782 807 947" stroke="#4E5262" strokeWidth={24} fill="none" strokeLinecap="round" strokeDasharray="650" strokeDashoffset={650*(1-ropeProgress)}/>
@@ -116,8 +137,13 @@ export const CartoonWorld: React.FC<Props> = ({phase}) => {
             <circle cx={807} cy={949} r={12} fill="#FFF5D8"/>
           </g>
         </g>}
-        <CartoonHero x={322} y={899} scale={1.02} emotion={isOutcome?'happy':phase==='intro'?'hopeful':'worried'} travel={484*escape} lift={lift} rescued={isOutcome}/>
-        {phase==='outro' && <LateDragon/>}
+        <CartoonHero x={322} y={899} scale={1.02} emotion={isOutcome?'happy':isDragon?'hopeful':phase==='intro'?'hopeful':'worried'} travel={isJump?jumpTravel:484*escape} lift={isJump?jumpLift:lift} rescued={isOutcome||isJump}/>
+        {isDragon && <LateDragon/>}
+        {isDragon && f>64 && <g opacity={interpolate(f,[64,81,120,150],[0,.8,.8,0],clamp)}>
+          {[0,1,2,3,4,5].map(i=><circle key={i} cx={670+(i*37)%230}
+            cy={900+(i*43)%150} r={19+i%3*17} fill={i%2?'#E6D4FA':'#FFFFFF'}
+            transform={'translate('+Math.sin(f/14+i)*14+','+(-f*.24)+')'}/>)}
+        </g>}
         {isOutcome && Array.from({length:10},(_,i)=>{
           const opacity=phase==='outro'?.85:interpolate(f,[24+i,48+i],[0,.9],clamp);
           const x=680+(i*41)%260,y=730+(i*67)%160;
