@@ -15,8 +15,8 @@
     "narration": "Мост рушится прямо над лавой. Что ему делать?"
   },
   "choicesIntro": {
-    "seconds": 2.4,
-    "narration": "Прыгнуть? Верёвка? Или дракон?"
+    "seconds": 3.5,
+    "narration": "Прыжок, верёвка или дракон!"
   },
   "decision": {
     "seconds": 6,

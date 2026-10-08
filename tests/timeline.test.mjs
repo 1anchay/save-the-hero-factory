@@ -21,7 +21,7 @@ test('viewers get six full seconds AFTER all three choices enter',()=>{
 test('phases have no gaps or overlaps',()=>{
   const s=buildSegments(demo);
   for(let i=1;i<s.length;i++) assert.equal(s[i-1].end,s[i].from);
-  assert.equal(s.at(-1).end,Math.round(22.9*FPS));
+  assert.equal(s.at(-1).end,Math.round(24*FPS));
 });
 
 test('rejects choices that are too quick',()=>{
