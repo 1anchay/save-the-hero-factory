@@ -1,55 +1,63 @@
 {
   "id": "episode-001",
-  "title": "Сможешь спасти Макса?",
+  "title": "Спаси Макса: три способа над лавой",
   "hero": {
     "name": "Макс",
     "outfit": "orange-hoodie"
   },
   "environment": "lava-bridge",
   "intro": {
-    "seconds": 2.5,
-    "narration": "Только один способ спасёт Макса!"
+    "seconds": 4,
+    "narration": "Макс застрял над лавой! Сможешь его спасти?"
   },
   "danger": {
-    "seconds": 3.5,
-    "narration": "Мост рушится прямо над лавой. Что ему делать?"
+    "seconds": 5,
+    "narration": "Мост трещит и разваливается. Под ним кипящая лава!"
   },
   "choicesIntro": {
-    "seconds": 3.5,
-    "narration": "Прыжок, верёвка или дракон!"
+    "seconds": 4,
+    "narration": "Прыжок, верёвка или дракон? Выбирай!"
   },
   "decision": {
-    "seconds": 6,
-    "narration": "У тебя шесть секунд. Выбирай!"
+    "seconds": 7,
+    "narration": "Семь секунд на решение. Думай!"
   },
   "choices": [
     {
       "id": "A",
       "text": "Прыгнуть",
       "icon": "jump",
-      "color": "#FF6B6B"
+      "color": "#F66B72"
     },
     {
       "id": "B",
       "text": "Верёвка",
       "icon": "rope",
-      "color": "#43C59E"
+      "color": "#25B992"
     },
     {
       "id": "C",
       "text": "Позвать дракона",
       "icon": "dragon",
-      "color": "#7869FF"
+      "color": "#7366DD"
     }
   ],
   "correctChoice": "B",
-  "outcome": {
-    "seconds": 4.3,
-    "narration": "Верёвка сработала! Макс спасён!"
+  "jumpOutcome": {
+    "seconds": 5,
+    "narration": "Первый вариант: прыжок! Ой, чуть не упал!"
+  },
+  "dragonOutcome": {
+    "seconds": 5,
+    "narration": "Второй: дракон! Он прилетел и всё испортил!"
+  },
+  "ropeOutcome": {
+    "seconds": 6,
+    "narration": "Третий вариант: верёвка! Макс зацепился и спасся!"
   },
   "outro": {
-    "seconds": 4.2,
-    "narration": "А дракон прилетел, когда всё уже закончилось!"
+    "seconds": 4,
+    "narration": "А ты какой вариант выбрал? Пиши в комментариях!"
   },
   "audio": {
     "voice": null,
